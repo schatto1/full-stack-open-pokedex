@@ -12,6 +12,10 @@ on:
 
 # this comment was added for exercise 11.13
 
+# this comment was added for exercise 11.17 since that was a web-based configuration
+# Require all status checks to pass before merging
+# Require all pull request to be approved before merging
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
