@@ -12,6 +12,10 @@ on:
 
 # this comment was added for exercise 11.13
 
+# this comment was added for exercise 11.17 since that was a web-based configuration
+# Require all status checks to pass before merging
+# Require all pull request to be approved before merging
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -36,7 +40,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:8000
       - name: Deploy app
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
@@ -46,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
         uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
